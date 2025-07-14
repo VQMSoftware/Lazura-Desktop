@@ -1,0 +1,42 @@
+{
+  "name": "lazura",
+  "version": "1.0.0",
+  "main": "main.bundle.js",
+  "packageManager": "yarn@4.9.1",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development concurrently \"yarn start:renderer\" \"wait-on http://localhost:8080 && yarn start:electron\"",
+    "start:renderer": "webpack serve --config webpack.renderer.config.js",
+    "start:electron": "electron ./build/main.bundle.js",
+    "start": "cross-env NODE_ENV=production electron ./build/main.bundle.js",
+    "build": "ts-node ./scripts/cpbuilder.ts",
+    "build:main": "webpack --config webpack.main.config.js",
+    "build:renderer": "webpack --config webpack.renderer.config.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@types/node": "^24.0.13",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "babel-loader": "^10.0.0",
+    "concurrently": "^9.2.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^7.1.2",
+    "electron": "^37.2.1",
+    "electron-rebuild": "^3.2.9",
+    "global": "^4.4.0",
+    "html-webpack-plugin": "^5.6.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "wait-on": "^8.0.3",
+    "webpack": "^5.100.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
+  }
+}
