@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   mode: process.env.NODE_ENV || 'production',
   target: 'electron-renderer',
-  entry: './src/renderer/app/entry/index.tsx',
+  entry: './src/renderer/views/app/entry/index.tsx',
   output: {
     filename: 'renderer.bundle.js',
     path: path.resolve(__dirname, 'build'), // Output to build/
