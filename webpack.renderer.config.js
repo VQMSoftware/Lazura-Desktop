@@ -7,12 +7,13 @@ module.exports = {
   entry: './src/renderer/views/app/entry/index.tsx',
   output: {
     filename: 'renderer.bundle.js',
-    path: path.resolve(__dirname, 'build'), // Output to build/
+    path: path.resolve(__dirname, 'build'),
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
+      '@icons': path.resolve(__dirname, 'build/icons'),
     },
   },
   module: {
@@ -35,6 +36,22 @@ module.exports = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
+      {
+        test: /\.svg$/,
+        issuer: /\.[jt]sx?$/,
+        oneOf: [
+          {
+            resourceQuery: /react/, // `import icon from './icon.svg?react'`
+            use: ['@svgr/webpack'],
+          },
+          {
+            type: 'asset/resource',
+            generator: {
+              filename: 'icons/[name].[hash][ext]', // Output to build/icons
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [
@@ -43,9 +60,4 @@ module.exports = {
       filename: 'app.html',
     }),
   ],
-  devServer: {
-    port: 8080,
-    hot: true,
-    static: './static/pages',
-  },
 };

@@ -1,11 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-// Polyfill global for React deps in electron renderer
 (window as any).global = window;
 
+import Titlebar from '../../titlebar';
+
 function App() {
-  return <h1>Hello Electron + React + TypeScript!</h1>;
+  return (
+    <>
+      <Titlebar />
+      {/* TODO: implament more app controls. */}
+    </>
+  );
 }
 
 const container = document.getElementById('root');

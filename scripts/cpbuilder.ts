@@ -40,8 +40,38 @@ function runYarnScript(script: string) {
   }
 }
 
+// Copy static HTML/pages
 copyDirRecursive(sourceDir, targetDir);
+
+// Build all webpack bundles
 runYarnScript('build:main');
 runYarnScript('build:renderer');
+runYarnScript('build:preload');
 
-console.log(`\n build finished successfully!\n`);
+// Copy icons manually
+function copyIconsManually() {
+  const iconSource = path.resolve(__dirname, '../src/renderer/resources/icons');
+  const iconDest = path.resolve(__dirname, '../build/icons');
+
+  if (!fs.existsSync(iconSource)) {
+    console.warn(`⚠️ Icon source directory does not exist: ${iconSource}`);
+    return;
+  }
+
+  fs.mkdirSync(iconDest, { recursive: true });
+
+  const files = fs.readdirSync(iconSource);
+
+  for (const file of files) {
+    if (file.endsWith('.svg')) {
+      const src = path.join(iconSource, file);
+      const dest = path.join(iconDest, file);
+      fs.copyFileSync(src, dest);
+      console.log(`compiled icon: ${file}`);
+    }
+  }
+}
+
+copyIconsManually();
+
+console.log(`\n🎉 Build finished successfully!\n`);

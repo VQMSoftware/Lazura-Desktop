@@ -10,8 +10,12 @@
     "allowJs": true,
     "jsx": "react-jsx",
     "sourceMap": true,
-    "baseUrl": "./src",
-    "resolveJsonModule": true
+    "baseUrl": "./",
+    "resolveJsonModule": true,
+    "paths": {
+      "@icons/*": ["build/icons/*"],
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src", "scripts"]
 }
