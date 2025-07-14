@@ -22,6 +22,12 @@ Designed with simplicity and performance in mind, Lazura Desktop is an ideal sta
 
 ## Getting Started
 
+enable corepack 
+
+```bash
+corepack enable
+```
+
 Clone the repository and install dependencies:
 
 ```bash
