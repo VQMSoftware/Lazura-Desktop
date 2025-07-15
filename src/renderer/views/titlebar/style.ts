@@ -8,9 +8,9 @@ export const TitlebarContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  height: 34px;
-  -webkit-app-region: drag; /* Drag the titlebar */
-  z-index: 1000;
+  height: 40px; /* Slightly taller */
+  -webkit-app-region: drag;
+  z-index: 1000; /* below Tabbar's z-index */
   user-select: none;
 `;
 
@@ -18,7 +18,7 @@ export const WindowControlsContainer = styled.div`
   display: flex;
   margin-left: auto;
   height: 100%;
-  -webkit-app-region: no-drag; /* Controls must be interactive */
+  -webkit-app-region: no-drag;
 `;
 
 export const Line = styled.div`
@@ -27,4 +27,5 @@ export const Line = styled.div`
   background-color: rgba(0, 0, 0, 0.12);
   width: 100%;
   height: 1px;
+  z-index: 1005; /* above TitlebarContainer but below tabs */
 `;

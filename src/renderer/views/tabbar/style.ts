@@ -1,22 +1,45 @@
-import styled from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
+
+// Smooth enter animation
+const tabEnter = keyframes`
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
+// Smooth exit animation
+const tabExit = keyframes`
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+`;
 
 export const TabbarContainer = styled.div`
   display: flex;
   flex-grow: 1;
   height: 34px;
   position: relative;
-  z-index: 2;
-  padding: 4px;
-  padding-bottom: 0;
+  z-index: 1010;
+  padding: 4px 0 0 6px;
   min-width: 0;
-  overflow: hidden;
+  overflow: visible;
   white-space: nowrap;
   max-width: calc(100% - 150px);
-  /* No changes here */
 `;
 
 interface TabItemProps {
   selected?: boolean;
+  isClosing?: boolean;
 }
 
 export const TabItem = styled.div<TabItemProps>`
@@ -34,13 +57,46 @@ export const TabItem = styled.div<TabItemProps>`
   border-top: ${({ selected }) => (selected ? '1px solid rgba(0,0,0,0.12)' : 'none')};
   border-left: ${({ selected }) => (selected ? '1px solid rgba(0,0,0,0.12)' : 'none')};
   border-right: ${({ selected }) => (selected ? '1px solid rgba(0,0,0,0.12)' : 'none')};
-  border-bottom: ${({ selected }) => (selected ? 'none' : '1px solid transparent')};
+  border-bottom: none;
+  position: relative;
+  z-index: ${({ selected }) => (selected ? 1020 : 1010)};
+  will-change: transform, opacity;
+  animation: ${({ isClosing }) => (isClosing ? tabExit : tabEnter)}
+    ${({ isClosing }) => (isClosing ? '200ms' : '300ms')} cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: forwards;
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.5);
-  }
+  ${({ isClosing }) =>
+    isClosing &&
+    css`
+      pointer-events: none;
+    `}
 
-  -webkit-app-region: no-drag; /* <-- make tab interactive */
+  ${({ selected }) =>
+    !selected &&
+    css`
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+    `}
+
+  ${({ selected }) =>
+    selected &&
+    css`
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -22px;
+        left: 0;
+        right: 0;
+        height: 22px;
+        background-color: white;
+        z-index: 1025;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+    `}
+
+  -webkit-app-region: no-drag;
 `;
 
 export const TabFavicon = styled.img`
@@ -48,7 +104,6 @@ export const TabFavicon = styled.img`
   height: 16px;
   margin-right: 4px;
   flex-shrink: 0;
-  /* No changes */
 `;
 
 export const TabTitle = styled.div`
@@ -57,7 +112,6 @@ export const TabTitle = styled.div`
   overflow: hidden;
   flex-grow: 1;
   min-width: 0;
-  /* No changes */
 `;
 
 export const TabCloseButton = styled.img`
@@ -66,7 +120,7 @@ export const TabCloseButton = styled.img`
   margin-left: 2px;
   margin-right: -2px;
   background-repeat: no-repeat;
-  background-size: 11px; /* Subtle adjustment */
+  background-size: 11px;
   background-position: center;
   cursor: pointer;
 
@@ -84,6 +138,7 @@ export const AddTabButton = styled.div`
   padding-bottom: 0;
   height: 26px;
   margin-top: 6px;
+  margin-left: 4px;
   width: 26px;
   background-repeat: no-repeat;
   background-size: 18px;

@@ -1,5 +1,3 @@
-// src/renderer/views/tabbar/index.tsx
-
 import React, { useState, useEffect } from 'react';
 import {
   TabbarContainer,
@@ -13,65 +11,66 @@ import {
 import addIcon from '@icons/add.svg';
 import closeIcon from '@icons/close.svg';
 
-// Default globe favicon as data URI
-const GLOBE_FAVICON = `data:image/svg+xml;base64,PHN2ZyB...<truncated for brevity>`;
+const GLOBE_FAVICON = `data:image/svg+xml;base64,PHN2ZyB...`; // Replace with real data URI
 
-// Tab interface
 interface Tab {
   id: number;
   title: string;
   favicon: string;
 }
 
-// Tabbar Component
 const Tabbar: React.FC = () => {
   const [tabs, setTabs] = useState<Tab[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [nextId, setNextId] = useState(1);
+  const [closingTabs, setClosingTabs] = useState<Set<number>>(new Set());
 
-  // Create a new tab
   const createTab = () => {
     const id = nextId;
-    const newTab: Tab = {
-      id,
-      title: 'New Tab',
-      favicon: GLOBE_FAVICON,
-    };
+    const newTab: Tab = { id, title: 'New Tab', favicon: GLOBE_FAVICON };
     setTabs((prev) => [...prev, newTab]);
     setSelectedId(id);
     setNextId(id + 1);
     window.electron?.send('create-web-contents-view', id);
   };
 
-  // Select a tab
   const selectTab = (id: number) => {
     setSelectedId(id);
     window.electron?.send('select-web-contents-view', id);
   };
 
-  // Close a tab
   const closeTab = (id: number) => {
-    setTabs((prevTabs) => {
-      const index = prevTabs.findIndex((t) => t.id === id);
-      if (index === -1) return prevTabs;
+    setClosingTabs((prev) => new Set(prev).add(id));
 
-      window.electron?.send('close-web-contents-view', id);
-      const newTabs = prevTabs.filter((t) => t.id !== id);
+    setTimeout(() => {
+      setTabs((prevTabs) => {
+        const index = prevTabs.findIndex((t) => t.id === id);
+        if (index === -1) return prevTabs;
 
-      if (selectedId === id) {
-        if (newTabs.length === 0) {
-          window.close();
-        } else {
-          const newSelectedIndex = index >= newTabs.length ? newTabs.length - 1 : index;
-          setSelectedId(newTabs[newSelectedIndex].id);
-          window.electron?.send('select-web-contents-view', newTabs[newSelectedIndex].id);
+        const newTabs = prevTabs.filter((t) => t.id !== id);
+        window.electron?.send('close-web-contents-view', id);
+
+        if (selectedId === id) {
+          if (newTabs.length === 0) {
+            window.close();
+          } else {
+            const newSelectedIndex = index >= newTabs.length ? newTabs.length - 1 : index;
+            setSelectedId(newTabs[newSelectedIndex].id);
+            window.electron?.send('select-web-contents-view', newTabs[newSelectedIndex].id);
+          }
         }
-      }
-      return newTabs;
-    });
+
+        return newTabs;
+      });
+
+      setClosingTabs((prev) => {
+        const updated = new Set(prev);
+        updated.delete(id);
+        return updated;
+      });
+    }, 200); // match exit animation duration
   };
 
-  // Handle 'create-tab' from main process
   useEffect(() => {
     const handler = (id: number) => {
       setTabs((prev) => {
@@ -81,10 +80,8 @@ const Tabbar: React.FC = () => {
       setSelectedId(id);
     };
 
-    // Listen
     window.electron?.on?.('create-tab', handler);
 
-    // Unlisten if off exists
     return () => {
       if (typeof window.electron?.off === 'function') {
         window.electron.off('create-tab', handler);
@@ -92,18 +89,17 @@ const Tabbar: React.FC = () => {
     };
   }, []);
 
-  // Mount first tab
   useEffect(() => {
     if (tabs.length === 0) createTab();
   }, []);
 
-  // Render
   return (
     <TabbarContainer>
       {tabs.map(({ id, title, favicon }) => (
         <TabItem
           key={id}
           selected={id === selectedId}
+          isClosing={closingTabs.has(id)}
           onClick={() => selectTab(id)}
           onMouseDown={(e) => e.button === 0 && selectTab(id)}
           role="tab"
