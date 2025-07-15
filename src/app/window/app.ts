@@ -4,6 +4,9 @@ import * as fs from 'fs';
 
 let mainWindow: BrowserWindow | null = null;
 
+// Set app name (important for macOS menu bar and some system UIs)
+app.setName('Lazura');
+
 function getIconPath(): string {
   const platform = process.platform;
   const projectRoot = path.resolve(__dirname, '..');
@@ -16,24 +19,21 @@ function getIconPath(): string {
     iconFile = 'icon.icns';
   }
 
-  const fullIconPath = path.join(iconDir, iconFile);
-  return fullIconPath;
+  return path.join(iconDir, iconFile);
 }
 
-// Get path to the window state file
+// Path to save window size/state
 const windowStatePath = path.join(app.getPath('userData'), 'window-state.json');
 
-// Load saved window state
 function loadWindowState(): { width: number; height: number; x?: number; y?: number } {
   try {
     const data = fs.readFileSync(windowStatePath, 'utf8');
     return JSON.parse(data);
   } catch {
-    return { width: 800, height: 600 }; // Default size
+    return { width: 800, height: 600 };
   }
 }
 
-// Save current window state
 function saveWindowState(win: BrowserWindow) {
   if (!win) return;
   const bounds = win.getBounds();
@@ -46,6 +46,7 @@ function createWindow() {
   const savedState = loadWindowState();
 
   mainWindow = new BrowserWindow({
+    title: 'Lazura', // <-- Set window title
     frame: false,
     width: savedState.width,
     height: savedState.height,
@@ -61,7 +62,7 @@ function createWindow() {
     },
   });
 
-  // Save size/position on resize or move
+  // Save window state on move/resize
   mainWindow.on('resize', () => saveWindowState(mainWindow!));
   mainWindow.on('move', () => saveWindowState(mainWindow!));
 
