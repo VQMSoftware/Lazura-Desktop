@@ -1,4 +1,3 @@
-// src/renderer/views/controls/index.tsx
 import React from 'react';
 import {
   ControlsContainer,
@@ -10,7 +9,6 @@ import maximizeIcon from '@icons/maximize.svg';
 import closeIcon from '@icons/closewindow.svg';
 
 const WindowControls: React.FC = () => {
-  // IPC event sending (replace with your ipc mechanism)
   const send = (channel: string) => window.electron?.send(channel, {});
 
   return (
