@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { execSync } from 'child_process';
 
-// Read version from package.json dynamically
+// Get version from package.json
 const packageJsonPath = path.resolve(__dirname, '../package.json');
 const pkgRaw = fs.readFileSync(packageJsonPath, 'utf-8');
 const pkg = JSON.parse(pkgRaw);
@@ -11,13 +11,15 @@ const appVersion = pkg.version || 'unknown';
 const sourceDir = path.resolve(__dirname, '../static/pages');
 const targetDir = path.resolve(__dirname, '../build');
 
-console.log(`\n📦 Lazura@v${appVersion}\n`);
+console.log(`\n📦 Lazura v${appVersion}\n`);
 
+// Utility: Copy a single file
 function copyFileSync(src: string, dest: string) {
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.copyFileSync(src, dest);
 }
 
+// Utility: Copy directory recursively
 function copyDirRecursive(src: string, dest: string) {
   if (!fs.existsSync(src)) return;
   const entries = fs.readdirSync(src, { withFileTypes: true });
@@ -32,6 +34,7 @@ function copyDirRecursive(src: string, dest: string) {
   }
 }
 
+// Run a yarn script
 function runYarnScript(script: string) {
   try {
     execSync(`yarn ${script}`, { stdio: 'inherit' });
@@ -43,20 +46,12 @@ function runYarnScript(script: string) {
 // Copy static HTML/pages
 copyDirRecursive(sourceDir, targetDir);
 
-// Build all webpack bundles
-runYarnScript('build:main');
-runYarnScript('build:renderer');
-runYarnScript('build:preload');
-
-// Copy icons manually
+// Copy icons manually (BEFORE building)
 function copyIconsManually() {
   const iconSource = path.resolve(__dirname, '../src/renderer/resources/icons');
   const iconDest = path.resolve(__dirname, '../build/icons');
 
-  if (!fs.existsSync(iconSource)) {
-    console.warn(`⚠️ Icon source directory does not exist: ${iconSource}`);
-    return;
-  }
+  if (!fs.existsSync(iconSource)) return;
 
   fs.mkdirSync(iconDest, { recursive: true });
 
@@ -67,11 +62,13 @@ function copyIconsManually() {
       const src = path.join(iconSource, file);
       const dest = path.join(iconDest, file);
       fs.copyFileSync(src, dest);
-      console.log(`compiled icon: ${file}`);
     }
   }
 }
 
 copyIconsManually();
 
-console.log(`\n🎉 Build finished successfully!\n`);
+// Build all parts
+runYarnScript('build:main');
+runYarnScript('build:renderer');
+runYarnScript('build:preload');

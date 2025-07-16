@@ -13,7 +13,7 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      '@icons': path.resolve(__dirname, 'build/icons'),
+      '@icons': path.resolve(__dirname, 'src/renderer/resources/icons'), // 🔧 FIXED
     },
   },
   module: {
