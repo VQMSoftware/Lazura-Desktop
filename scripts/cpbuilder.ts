@@ -46,27 +46,7 @@ function runYarnScript(script: string) {
 // Copy static HTML/pages
 copyDirRecursive(sourceDir, targetDir);
 
-// Copy icons manually (BEFORE building)
-function copyIconsManually() {
-  const iconSource = path.resolve(__dirname, '../src/renderer/resources/icons');
-  const iconDest = path.resolve(__dirname, '../build/icons');
-
-  if (!fs.existsSync(iconSource)) return;
-
-  fs.mkdirSync(iconDest, { recursive: true });
-
-  const files = fs.readdirSync(iconSource);
-
-  for (const file of files) {
-    if (file.endsWith('.svg')) {
-      const src = path.join(iconSource, file);
-      const dest = path.join(iconDest, file);
-      fs.copyFileSync(src, dest);
-    }
-  }
-}
-
-copyIconsManually();
+// ❌ Removed manual copyIconsManually()
 
 // Build all parts
 runYarnScript('build:main');

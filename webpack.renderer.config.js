@@ -13,7 +13,7 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      '@icons': path.resolve(__dirname, 'src/renderer/resources/icons'), // 🔧 FIXED
+      '@icons': path.resolve(__dirname, 'src/renderer/resources/icons'),
     },
   },
   module: {
@@ -41,13 +41,13 @@ module.exports = {
         issuer: /\.[jt]sx?$/,
         oneOf: [
           {
-            resourceQuery: /react/, // `import icon from './icon.svg?react'`
+            resourceQuery: /react/, // usage: import Icon from './icon.svg?react'
             use: ['@svgr/webpack'],
           },
           {
             type: 'asset/resource',
             generator: {
-              filename: 'icons/[name].[hash][ext]', // Output to build/icons
+              filename: 'icons/[name].[contenthash][ext]', // ✅ Hash restored
             },
           },
         ],
