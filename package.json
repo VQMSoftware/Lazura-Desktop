@@ -28,6 +28,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
     "electron": "^37.2.3",
+    "electron-builder": "26.0.12",
     "electron-rebuild": "^3.2.9",
     "file-loader": "^6.2.0",
     "global": "^4.4.0",
