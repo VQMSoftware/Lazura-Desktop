@@ -4,7 +4,6 @@ import * as fs from 'fs';
 
 let mainWindow: BrowserWindow | null = null;
 
-// Set app name (important for macOS menu bar and some system UIs)
 app.setName('Lazura');
 
 function getIconPath(): string {
@@ -22,7 +21,6 @@ function getIconPath(): string {
   return path.join(iconDir, iconFile);
 }
 
-// Path to save window size/state
 const windowStatePath = path.join(app.getPath('userData'), 'window-state.json');
 
 function loadWindowState(): { width: number; height: number; x?: number; y?: number } {
@@ -45,13 +43,18 @@ function createWindow() {
   const iconPath = getIconPath();
   const savedState = loadWindowState();
 
+  const minWidth = savedState.width;
+  const minHeight = savedState.height;
+
   mainWindow = new BrowserWindow({
-    title: 'Lazura', // <-- Set window title
+    title: 'Lazura',
     frame: false,
     width: savedState.width,
     height: savedState.height,
     x: savedState.x,
     y: savedState.y,
+    minWidth,
+    minHeight,
     icon: iconPath,
     webPreferences: {
       nodeIntegration: false,
@@ -62,7 +65,6 @@ function createWindow() {
     },
   });
 
-  // Save window state on move/resize
   mainWindow.on('resize', () => saveWindowState(mainWindow!));
   mainWindow.on('move', () => saveWindowState(mainWindow!));
 
