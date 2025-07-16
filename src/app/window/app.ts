@@ -30,7 +30,7 @@ function loadWindowState(): { width: number; height: number; x?: number; y?: num
     const data = fs.readFileSync(windowStatePath, 'utf8');
     return JSON.parse(data);
   } catch {
-    return { width: 800, height: 600 };
+    return { width: 750, height: 580 };
   }
 }
 
