@@ -1,15 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-
-(window as any).global = window;
-
 import Titlebar from '../../titlebar';
 
 function App() {
   return (
     <>
       <Titlebar />
-      {/* TODO: implament more app controls. */}
     </>
   );
 }

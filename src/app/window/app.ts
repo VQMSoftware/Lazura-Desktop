@@ -4,6 +4,7 @@ import * as fs from 'fs';
 
 let mainWindow: BrowserWindow | null = null;
 
+// Set app name (important for macOS menu bar and some system UIs)
 app.setName('Lazura');
 
 function getIconPath(): string {
@@ -33,7 +34,6 @@ function loadWindowState(): { width: number; height: number; x?: number; y?: num
 }
 
 function saveWindowState(win: BrowserWindow) {
-  if (!win) return;
   const bounds = win.getBounds();
   fs.writeFileSync(windowStatePath, JSON.stringify(bounds, null, 2), 'utf8');
 }
@@ -43,9 +43,6 @@ function createWindow() {
   const iconPath = getIconPath();
   const savedState = loadWindowState();
 
-  const minWidth = savedState.width;
-  const minHeight = savedState.height;
-
   mainWindow = new BrowserWindow({
     title: 'Lazura',
     frame: false,
@@ -53,14 +50,13 @@ function createWindow() {
     height: savedState.height,
     x: savedState.x,
     y: savedState.y,
-    minWidth,
-    minHeight,
+    minWidth: savedState.width,
+    minHeight: savedState.height,
     icon: iconPath,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
       preload: path.join(__dirname, 'window-preload.bundle.js'),
-      javascript: true,
       sandbox: true,
     },
   });
@@ -70,24 +66,19 @@ function createWindow() {
 
   if (dev) {
     mainWindow
-      .loadURL('http://localhost:8080')
-      .then(() => {
-        mainWindow?.webContents.openDevTools({ mode: 'detach' });
-      })
-      .catch((err) => {
-        console.error('Failed to load URL:', err);
-      });
+      .loadURL('http://localhost:8080/app.html')
+      .then(() => mainWindow?.webContents.openDevTools({ mode: 'detach' }))
+      .catch((err) => console.error('❌ Failed to load dev URL:', err));
   } else {
-    const filePath = path.resolve(app.getAppPath(), 'app.html');
-    if (!fs.existsSync(filePath)) {
-      console.error(`❌ app.html not found at ${filePath}`);
+    const appHtmlPath = path.join(__dirname, '..', 'build', 'app.html');
+
+    if (!fs.existsSync(appHtmlPath)) {
+      console.error(`❌ app.html not found at ${appHtmlPath}`);
     }
 
     mainWindow
-      .loadFile(filePath)
-      .catch((err) => {
-        console.error('Failed to load file:', err);
-      });
+      .loadFile(appHtmlPath)
+      .catch((err) => console.error('❌ Failed to load app.html:', err));
   }
 
   mainWindow.on('closed', () => {
@@ -105,22 +96,23 @@ app.on('activate', () => {
   if (mainWindow === null) createWindow();
 });
 
+// Window control IPC handlers
 ipcMain.on('window-close', () => {
-  if (mainWindow) mainWindow.close();
+  mainWindow?.close();
 });
 
 ipcMain.on('window-minimize', () => {
-  if (mainWindow) mainWindow.minimize();
+  mainWindow?.minimize();
 });
 
 ipcMain.on('window-maximize', () => {
-  if (mainWindow) {
-    if (mainWindow.isMaximized()) {
-      mainWindow.unmaximize();
-      mainWindow.webContents.send('window-unmaximized');
-    } else {
-      mainWindow.maximize();
-      mainWindow.webContents.send('window-maximized');
-    }
+  if (!mainWindow) return;
+
+  if (mainWindow.isMaximized()) {
+    mainWindow.unmaximize();
+    mainWindow.webContents.send('window-unmaximized');
+  } else {
+    mainWindow.maximize();
+    mainWindow.webContents.send('window-maximized');
   }
 });
