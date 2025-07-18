@@ -76,12 +76,15 @@ export const TabItem = styled.div<TabItemProps>`
     css`
       &:hover {
         background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 6px 6px 0 0;
       }
     `}
 
   ${({ selected }) =>
     selected &&
     css`
+      border-radius: 6px 6px 0 0;
+
       &::after {
         content: '';
         position: absolute;
@@ -91,8 +94,8 @@ export const TabItem = styled.div<TabItemProps>`
         height: 22px;
         background-color: white;
         z-index: 1025;
-        border-bottom-left-radius: 10px;
-        border-bottom-right-radius: 10px;
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
       }
     `}
 
@@ -122,7 +125,6 @@ export const TabCloseButton = styled.img`
   background-repeat: no-repeat;
   background-size: 11px;
   background-position: center;
-  cursor: pointer;
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.08);
