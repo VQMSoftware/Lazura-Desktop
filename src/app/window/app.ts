@@ -1,8 +1,10 @@
 import { app, BrowserWindow, ipcMain } from 'electron';
 import * as path from 'path';
 import * as fs from 'fs';
+import { contentManager } from '@/app/exports';
 
 let mainWindow: BrowserWindow | null = null;
+let ContentManager: contentManager;
 
 // Set app name (important for macOS menu bar and some system UIs)
 app.setName('Lazura');
@@ -61,8 +63,17 @@ function createWindow() {
     },
   });
 
-  mainWindow.on('resize', () => saveWindowState(mainWindow!));
-  mainWindow.on('move', () => saveWindowState(mainWindow!));
+  ContentManager = new contentManager(mainWindow);
+
+  // Window event handlers
+  mainWindow.on('resize', () => {
+    saveWindowState(mainWindow!);
+    mainWindow?.webContents.send('window-resized');
+  });
+
+  mainWindow.on('move', () => {
+    saveWindowState(mainWindow!);
+  });
 
   if (dev) {
     mainWindow
@@ -88,12 +99,15 @@ function createWindow() {
 
 app.whenReady().then(createWindow);
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') app.quit();
-});
-
 app.on('activate', () => {
   if (mainWindow === null) createWindow();
+});
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    ContentManager?.destroyAllViews();
+    app.quit();
+  }
 });
 
 // Window control IPC handlers

@@ -10,8 +10,7 @@ import {
 
 import addIcon from '@icons/add.svg';
 import closeIcon from '@icons/close.svg';
-
-const GLOBE_FAVICON = `data:image/svg+xml;base64,PHN2ZyB...`; // Replace with real data URI
+import defaultFavicon from '@icons/defaultfavicon.svg'; // Imported SVG favicon
 
 interface Tab {
   id: number;
@@ -27,11 +26,12 @@ const Tabbar: React.FC = () => {
 
   const createTab = () => {
     const id = nextId;
-    const newTab: Tab = { id, title: 'New Tab', favicon: GLOBE_FAVICON };
+    const newTab: Tab = { id, title: 'New Tab', favicon: defaultFavicon };
     setTabs((prev) => [...prev, newTab]);
     setSelectedId(id);
     setNextId(id + 1);
     window.electron?.send('create-web-contents-view', id);
+    window.electron?.send('select-web-contents-view', id);
   };
 
   const selectTab = (id: number) => {
@@ -72,22 +72,26 @@ const Tabbar: React.FC = () => {
   };
 
   useEffect(() => {
-    const handler = (id: number) => {
-      setTabs((prev) => {
-        if (prev.find((t) => t.id === id)) return prev;
-        return [...prev, { id, title: 'New Tab', favicon: GLOBE_FAVICON }];
-      });
-      setSelectedId(id);
+    const handleTabUpdate = (update: any) => {
+      setTabs((prevTabs) =>
+        prevTabs.map((tab) =>
+          tab.id === update.id
+            ? {
+                ...tab,
+                title: update.title ?? tab.title,
+                favicon: update.favicon ?? tab.favicon,
+              }
+            : tab
+        )
+      );
     };
 
-    window.electron?.on?.('create-tab', handler);
+  window.electron?.on?.('tab-update', handleTabUpdate);
 
-    return () => {
-      if (typeof window.electron?.off === 'function') {
-        window.electron.off('create-tab', handler);
-      }
-    };
-  }, []);
+  return () => {
+    window.electron?.off?.('tab-update', handleTabUpdate);
+  };
+}, []);
 
   useEffect(() => {
     if (tabs.length === 0) createTab();

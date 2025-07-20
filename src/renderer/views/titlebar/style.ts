@@ -4,7 +4,7 @@ export const TitlebarContainer = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  background-color: ${({ theme }) => theme.titlebarBg || '#f5f5f5'};
+  background-color: ${({ theme }) => theme.titlebarBg || '#cfd8dc'}; /* Cool, slightly blue-gray like Chromium */
   position: fixed;
   top: 0;
   left: 0;
@@ -19,13 +19,4 @@ export const WindowControlsContainer = styled.div`
   margin-left: auto;
   height: 100%;
   -webkit-app-region: no-drag;
-`;
-
-export const Line = styled.div`
-  position: absolute;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.12);
-  width: 100%;
-  height: 1px;
-  z-index: 1005; /* above TitlebarContainer but below tabs */
 `;

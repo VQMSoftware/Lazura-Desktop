@@ -17,15 +17,16 @@ export const Button = styled.button`
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: rgba(60, 60, 67, 0.1);
+    background-color: ${props => props.disabled ? 'transparent' : 'rgba(60, 60, 67, 0.1)'};
   }
 
   &:active {
-    background-color: rgba(60, 60, 67, 0.2);
+    background-color: ${props => props.disabled ? 'transparent' : 'rgba(60, 60, 67, 0.2)'};
   }
 `;
 
-export const ButtonIcon = styled.img`
+export const ButtonIcon = styled.img<{ $disabled?: boolean }>`
   width: 16px;
   height: 16px;
+  opacity: ${props => props.$disabled ? 0.4 : 1};
 `;

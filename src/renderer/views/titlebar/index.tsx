@@ -1,5 +1,5 @@
 import React from 'react';
-import { TitlebarContainer, Line, WindowControlsContainer } from './style';
+import { TitlebarContainer, WindowControlsContainer } from './style';
 import Tabbar from '../tabbar';
 import WindowControls from '../controls';
 
@@ -10,7 +10,6 @@ const Titlebar: React.FC = () => {
       <WindowControlsContainer>
         <WindowControls />
       </WindowControlsContainer>
-      <Line />
     </TitlebarContainer>
   );
 };

@@ -12,7 +12,6 @@ const tabEnter = keyframes`
   }
 `;
 
-// Smooth exit animation
 const tabExit = keyframes`
   0% {
     transform: scale(1);
@@ -76,14 +75,14 @@ export const TabItem = styled.div<TabItemProps>`
     css`
       &:hover {
         background-color: rgba(0, 0, 0, 0.05);
-        border-radius: 6px 6px 0 0;
+        border-radius: 10px 10px 0 0;
       }
     `}
 
   ${({ selected }) =>
     selected &&
     css`
-      border-radius: 6px 6px 0 0;
+      border-radius: 10px 10px 0 0;
 
       &::after {
         content: '';
@@ -94,8 +93,8 @@ export const TabItem = styled.div<TabItemProps>`
         height: 22px;
         background-color: white;
         z-index: 1025;
-        border-bottom-left-radius: 6px;
-        border-bottom-right-radius: 6px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
       }
     `}
 
@@ -118,12 +117,13 @@ export const TabTitle = styled.div`
 `;
 
 export const TabCloseButton = styled.img`
-  height: 14px;
-  width: 14px;
-  margin-left: 2px;
-  margin-right: -2px;
+  height: 15px;
+  width: 15px;
+  margin-top: 2px;
+  margin-left: 0px;
+  margin-right: 0px;
   background-repeat: no-repeat;
-  background-size: 11px;
+  background-size: 13px;
   background-position: center;
 
   &:hover {

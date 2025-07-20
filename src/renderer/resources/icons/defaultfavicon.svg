@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Outer window border -->
+  <rect x="8" y="12" width="48" height="40" rx="2" ry="2" fill="none" stroke="black" stroke-width="2"></rect>
+
+  <!-- Top bar line -->
+  <line x1="8" y1="20" x2="56" y2="20" stroke="black" stroke-width="2"></line>
+
+  <!-- Fake text lines -->
+  <line x1="12" y1="26" x2="40" y2="26" stroke="black" stroke-width="1.5"></line>
+  <line x1="12" y1="32" x2="44" y2="32" stroke="black" stroke-width="1.5"></line>
+  <line x1="12" y1="38" x2="36" y2="38" stroke="black" stroke-width="1.5"></line>
+  <line x1="12" y1="44" x2="42" y2="44" stroke="black" stroke-width="1.5"></line>
+</svg>

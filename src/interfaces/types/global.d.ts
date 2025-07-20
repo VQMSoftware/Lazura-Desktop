@@ -1,9 +1,27 @@
-interface ElectronAPI {
-  on: (channel: string, listener: (...args: any[]) => void) => void;
-  send: (channel: string, ...args: any[]) => void;
-  off?: (channel: string, listener: (...args: any[]) => void) => void;
-}
+export {};
 
-interface Window {
-  electron?: ElectronAPI;
+declare global {
+  interface ElectronAPI {
+    // Sending messages to main
+    send: (channel: string, ...args: any[]) => void;
+
+    // Listening to messages from main
+    on: (channel: string, listener: (...args: any[]) => void) => void;
+
+    // Removing listeners
+    off?: (channel: string, listener: (...args: any[]) => void) => void;
+
+    // Sync getter for the current tab ID
+    getCurrentTabId: () => number;
+
+    // Async getter for the navigation state
+    getNavigationState: (id: number) => Promise<{
+      canGoBack: boolean;
+      canGoForward: boolean;
+    }>;
+  }
+
+  interface Window {
+    electron?: ElectronAPI;
+  }
 }
