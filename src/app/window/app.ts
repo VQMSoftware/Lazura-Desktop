@@ -6,7 +6,6 @@ import { contentManager } from '@/app/exports';
 let mainWindow: BrowserWindow | null = null;
 let ContentManager: contentManager;
 
-// Set app name (important for macOS menu bar and some system UIs)
 app.setName('Lazura');
 
 function getIconPath(): string {
@@ -26,7 +25,13 @@ function getIconPath(): string {
 
 const windowStatePath = path.join(app.getPath('userData'), 'window-state.json');
 
-function loadWindowState(): { width: number; height: number; x?: number; y?: number } {
+function loadWindowState(): {
+  width: number;
+  height: number;
+  x?: number;
+  y?: number;
+  isMaximized?: boolean;
+} {
   try {
     const data = fs.readFileSync(windowStatePath, 'utf8');
     return JSON.parse(data);
@@ -37,7 +42,9 @@ function loadWindowState(): { width: number; height: number; x?: number; y?: num
 
 function saveWindowState(win: BrowserWindow) {
   const bounds = win.getBounds();
-  fs.writeFileSync(windowStatePath, JSON.stringify(bounds, null, 2), 'utf8');
+  const isMaximized = win.isMaximized();
+  const state = { ...bounds, isMaximized };
+  fs.writeFileSync(windowStatePath, JSON.stringify(state, null, 2), 'utf8');
 }
 
 function createWindow() {
@@ -52,8 +59,8 @@ function createWindow() {
     height: savedState.height,
     x: savedState.x,
     y: savedState.y,
-    minWidth: savedState.width,
-    minHeight: savedState.height,
+    minWidth: 400,
+    minHeight: 300,
     icon: iconPath,
     webPreferences: {
       nodeIntegration: false,
@@ -65,14 +72,37 @@ function createWindow() {
 
   ContentManager = new contentManager(mainWindow);
 
+  // Restore maximized state if previously maximized
+  if (savedState.isMaximized) {
+    mainWindow.maximize();
+  }
+
   // Window event handlers
   mainWindow.on('resize', () => {
-    saveWindowState(mainWindow!);
+    if (mainWindow && !mainWindow.isMaximized()) {
+      saveWindowState(mainWindow);
+    }
     mainWindow?.webContents.send('window-resized');
   });
 
   mainWindow.on('move', () => {
-    saveWindowState(mainWindow!);
+    if (mainWindow && !mainWindow.isMaximized()) {
+      saveWindowState(mainWindow);
+    }
+  });
+
+  mainWindow.on('maximize', () => {
+    if (mainWindow) {
+      saveWindowState(mainWindow);
+      mainWindow.webContents.send('window-maximized');
+    }
+  });
+
+  mainWindow.on('unmaximize', () => {
+    if (mainWindow) {
+      saveWindowState(mainWindow);
+      mainWindow.webContents.send('window-unmaximized');
+    }
   });
 
   if (dev) {
