@@ -1,0 +1,33 @@
+{
+  "appId": "com.lazura.desktop",
+  "productName": "Lazura",
+  "copyright": "© 2025 VQMSoftware",
+  "files": [
+    "build/**/*",
+    "node_modules/**/*",
+    "static/**/*"
+  ],
+  "directories": {
+    "buildResources": "static/app_icon",
+    "output": "dist"
+  },
+  "extraResources": [
+    {
+      "from": "static/",
+      "to": "static/",
+      "filter": ["**/*"]
+    }
+  ],
+  "win": {
+    "icon": "static/app_icon/icon.ico",
+    "target": "nsis"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": true,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Lazura"
+  }
+}

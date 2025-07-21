@@ -1,7 +1,9 @@
 {
   "name": "lazura",
   "version": "1.0.0",
-  "main": "main.bundle.js",
+  "description": "A beautiful fast custom Electron web browser, react, styled components and typescript.",
+  "author": "Damon Smith <vqmsoftware@gmail.com>",
+  "main": "build/main.bundle.js",
   "packageManager": "yarn@4.9.1",
   "scripts": {
     "dev": "cross-env NODE_ENV=development concurrently \"yarn start:renderer\" \"wait-on http://localhost:8080/app.html && yarn build:main && yarn start:electron\"",
@@ -11,7 +13,8 @@
     "build": "ts-node ./scripts/cpbuilder.ts",
     "build:main": "webpack --config webpack.main.config.js",
     "build:renderer": "webpack --config webpack.renderer.config.js",
-    "build:preload": "webpack --config webpack.preload.config.js"
+    "build:preload": "webpack --config webpack.preload.config.js",
+    "compile-windows": "yarn build:main && electron-builder --config electron-builder.json --win"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
@@ -20,10 +23,10 @@
     "@babel/preset-typescript": "^7.27.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.6.1",
     "@svgr/webpack": "^8.1.0",
-    "@types/node": "^24.0.14",
+    "@types/node": "^24.0.15",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@types/react-refresh": "^0",
+    "@types/react-refresh": "^0.14.6",
     "babel-loader": "^10.0.0",
     "concurrently": "^9.2.0",
     "copy-webpack-plugin": "^13.0.0",
@@ -31,7 +34,6 @@
     "css-loader": "^7.1.2",
     "electron": "^37.2.3",
     "electron-builder": "26.0.12",
-    "electron-rebuild": "^3.2.9",
     "file-loader": "^6.2.0",
     "global": "^4.4.0",
     "html-webpack-plugin": "^5.6.3",
