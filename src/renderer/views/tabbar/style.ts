@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
-// Smooth enter animation
+// smooth tab creation animation.
 const tabEnter = keyframes`
   0% {
     transform: scale(0.95);
@@ -12,6 +12,7 @@ const tabEnter = keyframes`
   }
 `;
 
+// smooth tab closing animation.
 const tabExit = keyframes`
   0% {
     transform: scale(1);
@@ -20,6 +21,15 @@ const tabExit = keyframes`
   100% {
     transform: scale(0.9);
     opacity: 0;
+  }
+`;
+
+const spin = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 `;
 
@@ -101,11 +111,28 @@ export const TabItem = styled.div<TabItemProps>`
   -webkit-app-region: no-drag;
 `;
 
-export const TabFavicon = styled.img`
+export const TabFaviconWrapper = styled.div`
   width: 16px;
   height: 16px;
   margin-right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+`;
+
+export const TabFavicon = styled.img`
+  width: 16px;
+  height: 16px;
+`;
+
+export const Spinner = styled.div`
+  width: 14px;
+  height: 14px;
+  border: 2px solid #ccc;
+  border-top: 2px solid #007bff;
+  border-radius: 50%;
+  animation: ${spin} 0.6s linear infinite;
 `;
 
 export const TabTitle = styled.div`
