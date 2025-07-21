@@ -14,7 +14,8 @@
     "build:main": "webpack --config webpack.main.config.js",
     "build:renderer": "webpack --config webpack.renderer.config.js",
     "build:preload": "webpack --config webpack.preload.config.js",
-    "compile-windows": "yarn build:main && electron-builder --config electron-builder.json --win"
+    "compile-windows": "yarn build:main && electron-builder --config electron-builder.json --win",
+    "publish": "electron-builder --publish=always"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
