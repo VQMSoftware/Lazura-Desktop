@@ -1,6 +1,6 @@
 {
   "name": "lazura",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A beautiful fast custom Electron web browser, react, styled components and typescript.",
   "author": "Damon Smith <vqmsoftware@gmail.com>",
   "main": "build/main.bundle.js",
