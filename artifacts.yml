@@ -1,0 +1,6 @@
+publish:
+  provider: github
+  owner: VQMSoftware
+  repo: Lazura-Desktop
+  releaseType: release
+  publishAutoUpdate: true
