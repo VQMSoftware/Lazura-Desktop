@@ -62,4 +62,4 @@ Lazura Desktop is a work in progress. Upcoming improvements may include enhanced
 
 ## License
 
-To Be Decided.
+This project is licensed under [![GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
