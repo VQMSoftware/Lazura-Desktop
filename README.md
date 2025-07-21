@@ -22,7 +22,7 @@ Designed with simplicity and performance in mind, Lazura Desktop is an ideal sta
 
 ## Getting Started
 
-enable corepack 
+Enable Corepack:
 
 ```bash
 corepack enable
@@ -52,7 +52,18 @@ Run the app in development mode:
 yarn run dev
 ```
 
-### Build
+---
+
+## Contributor License Agreement (CLA) 🔒
+
+Before contributing, all developers must read and agree to the [Contributor License Agreement (contributing license agreement)](CONTRIBUTING.md).
+
+By submitting code, you confirm that:
++ you have read the agreement in its entire form, no shortcuts, no exeptions.
+
+Pull requests that do not include explicit CLA agreement will be closed.
+
+---
 
 ## Future Plans
 
