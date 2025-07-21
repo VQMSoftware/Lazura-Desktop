@@ -37,6 +37,16 @@ export class contentManager {
       event.returnValue = this.currentViewId;
     });
 
+    // Synchronous URL retrieval
+    ipcMain.on('get-tab-url-sync', (event, tabId: number) => {
+      const view = this.views.get(tabId);
+      if (view) {
+        event.returnValue = view.getWebContents().getURL();
+      } else {
+        event.returnValue = '';
+      }
+    });
+
     // Navigation controls
     ipcMain.on('navigate-to-url', (_, { id, url }) => {
       this.navigateToUrl(id, url);

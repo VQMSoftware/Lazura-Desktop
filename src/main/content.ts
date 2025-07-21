@@ -25,7 +25,6 @@ export class CreateChildView {
         partition: `persist:webcontents-${id}`,
         webSecurity: true,
         allowRunningInsecureContent: false,
-        preload: path.join(__dirname, 'preload.js'),
       },
     });
 
@@ -100,6 +99,11 @@ export class CreateChildView {
     webContents.on('did-navigate-in-page', () => {
       this.sendNavStateUpdate();
     });
+
+    // Handle window resize events to prevent white border
+    this.parentWindow.on('resize', () => this.updateBounds());
+    ipcMain.on('window-maximized', () => this.updateBounds());
+    ipcMain.on('window-unmaximized', () => this.updateBounds());
   }
 
   // Send navigation state updates
@@ -196,12 +200,16 @@ export class CreateChildView {
     if (this.isDestroyed) return;
 
     const bounds = this.parentWindow.getContentBounds();
+    const isMaximized = this.parentWindow.isMaximized();
     // Adjusted for toolbar (40px top + 46px height = 86px total offset)
+    // Added height adjustment for maximized state to prevent white border
+    const heightAdjustment = isMaximized ? 2 : 0;
+    
     this.view.setBounds({ 
       x: 0, 
       y: 87, 
       width: bounds.width, 
-      height: bounds.height - 87 
+      height: bounds.height - 87 + heightAdjustment
     });
   }
 

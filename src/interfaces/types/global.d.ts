@@ -14,6 +14,9 @@ declare global {
     // Sync getter for the current tab ID
     getCurrentTabId: () => number;
 
+    // Sync getter for the current tab URL (added)
+    getTabUrlSync?: (id: number) => string;
+
     // Async getter for the navigation state
     getNavigationState: (id: number) => Promise<{
       canGoBack: boolean;

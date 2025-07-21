@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const AddressBarContainer = styled.div`
   display: flex;
@@ -25,14 +25,64 @@ export const SearchIcon = styled.img`
   opacity: 0.6;
 `;
 
-export const Input = styled.input`
-  flex: 1 1 auto;  /* grow and shrink */
-  height: 100%;
-  border: none;
-  background: transparent;
-  font-size: 14px;
-  outline: none;
+export const InputWrapper = styled.div`
+  position: relative;
+  flex: 1 1 auto;
   min-width: 0;
+`;
+
+export const OverlayText = styled.div<{ isFocused: boolean }>`
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  user-select: none;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 14px;
+  font-family: inherit;
+  padding-left: 2px;
+  color: transparent;
+
+  /* We will color the spans inside, override transparent on those */
+  & .protocol {
+    color: #b0b0b0; /* lighter gray */
+  }
+  & .domain {
+    color: #000000; /* black - keep unchanged */
+  }
+  & .rest {
+    color: #aaaaaa; /* lighter gray */
+  }
+
+  /* Hide overlay text when input is focused so cursor is visible */
+  ${(props) =>
+    props.isFocused &&
+    css`
+      display: none;
+    `}
+`;
+
+export const StyledInput = styled.input`
+  position: relative;
+  width: 100%;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  height: 32px;
+  outline: none;
+  color: #000000;
+  padding-left: 2px;
+  font-family: inherit;
+
+  &:not(:focus) {
+    color: transparent;
+    /* Show cursor */
+    caret-color: black;
+  }
 `;
 
 export const IconButton = styled.button`

@@ -1,4 +1,3 @@
-// D:\main-public-projects\Lazura-Desktop\src\electron.d.ts
 interface ElectronAPI {
   // Window controls
   send: (channel: string, data?: any) => void;

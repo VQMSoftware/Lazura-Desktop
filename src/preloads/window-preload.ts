@@ -83,6 +83,10 @@ contextBridge.exposeInMainWorld('electron', {
     return ipcRenderer.sendSync('get-current-tab-id');
   },
 
+  getTabUrlSync: (id: number): string => {
+    return ipcRenderer.sendSync('get-tab-url-sync', id) || '';
+  },
+
   // Async method to get navigation state
   getNavigationState: (id: number) => {
     return ipcRenderer.invoke('get-navigation-state', id);
