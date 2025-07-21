@@ -54,9 +54,9 @@ yarn run dev
 
 ---
 
-## Contributor License Agreement (CLA) 🔒
+## Contributor License Agreement 🔒
 
-Before contributing, all developers must read and agree to the [Contributor License Agreement (contributing license agreement)](CONTRIBUTING.md).
+Before contributing, all developers must read and agree to the [(contributing license agreement)](CONTRIBUTING.md).
 
 By submitting code, you confirm that:
 + you have read the agreement in its entire form, no shortcuts, no exeptions.
@@ -67,7 +67,7 @@ Pull requests that do not include explicit CLA agreement will be closed.
 
 ## Future Plans
 
-Lazura Desktop is a work in progress. Upcoming improvements may include enhanced feature sets, UI/UX refinements, and performance optimizations. Contributions and feedback are welcome!
+Lazura Desktop is a work in progress. Upcoming improvements may include enhanced feature sets, UI/UX refinements, and performance optimizations.
 
 ---
 
