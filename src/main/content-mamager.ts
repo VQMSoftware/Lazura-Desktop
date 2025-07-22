@@ -217,11 +217,18 @@ export class contentManager {
     return this.currentViewId;
   }
 
-  /**
-   * Destroy all views and clean up
-   */
+ /**
+ * Destroy all views and clean up
+ */
   public destroyAllViews() {
-    this.views.forEach(view => view.destroy());
+    this.views.forEach((view, id) => {
+      try {
+        view.destroy();
+      } catch (e) {
+        console.warn(`[DestroyAll] Failed to destroy view ${id}:`, e);
+      }
+    });
+
     this.views.clear();
     this.currentViewId = null;
   }

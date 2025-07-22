@@ -225,8 +225,23 @@ export class CreateChildView {
     if (this.isDestroyed) return;
 
     this.isDestroyed = true;
-    this.parentWindow.contentView.removeChildView(this.view);
-    // TODO: this.view.webContents.destroy();
+
+    try {
+      // Only remove view if the parent window and view are still alive
+      if (!this.parentWindow.isDestroyed() && this.view && !this.view.webContents.isDestroyed()) {
+        this.parentWindow.contentView.removeChildView(this.view);
+      }
+    } catch (e) {
+      console.warn(`[Destroy] Failed to remove view from window:`, e);
+    }
+
+    try {
+      if (!this.view.webContents.isDestroyed()) {
+        this.view.webContents.close();
+      }
+    } catch (e) {
+      console.warn(`[Destroy] Failed to close webContents:`, e);
+    }
   }
 
   // Visibility control

@@ -135,7 +135,9 @@ app.on('activate', () => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    ContentManager?.destroyAllViews();
+    if (!mainWindow?.isDestroyed()) {
+      ContentManager?.destroyAllViews();
+    }
     app.quit();
   }
 });
