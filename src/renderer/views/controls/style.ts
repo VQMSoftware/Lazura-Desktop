@@ -27,12 +27,16 @@ export const WindowButton = styled.div`
   }
 
   &.minimize {
-    background-position: center 45%;
+    background-position: center 54%;
+  }
+
+  &.maximize {
+    background-size: 15px 15px;
   }
 
   &.close {
     background-size: 21px 21px;
-    background-position: center 58%;
+    background-position: center 55%;
   }
 
   &.close:hover {
