@@ -1,5 +1,5 @@
 
-# Lazura Desktop
+# publishing (this will apply only if you make your own repo)
 
 **Lazura** is a lightweight custom desktop web browser built with Electron, React, and TypeScript.
 
