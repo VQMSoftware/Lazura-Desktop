@@ -1,17 +1,14 @@
-import js from '@eslint/js';
-import tseslint from 'typescript-eslint';
-import react from 'eslint-plugin-react';
-import reactHooks from 'eslint-plugin-react-hooks';
-import globals from 'globals';
+const js = require('@eslint/js');
+const tseslint = require('typescript-eslint');
+const react = require('eslint-plugin-react');
+const reactHooks = require('eslint-plugin-react-hooks');
+const globals = require('globals');
 
-/** @type {import("eslint").Linter.FlatConfig[]} */
-export default [
+module.exports = [
   {
     ignores: ['**/build/**', '**/dist/**', '**/node_modules/**'],
   },
-
   js.configs.recommended,
-
   {
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
@@ -35,9 +32,17 @@ export default [
       'react/react-in-jsx-scope': 'off',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { 
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_'
+        }
+      ],
+      'no-unused-vars': 'off'
     },
   },
-
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
@@ -58,4 +63,17 @@ export default [
       'react-hooks/exhaustive-deps': 'warn',
     },
   },
+  // Add this new configuration for Node.js files
+  {
+    files: ['**/*.cjs', 'webpack.*.config.js'],
+    languageOptions: {
+      globals: {
+        require: 'readonly',
+        module: 'readonly',
+        process: 'readonly',
+        __dirname: 'readonly'
+      },
+      sourceType: 'commonjs'
+    }
+  }
 ];
