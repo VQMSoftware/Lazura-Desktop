@@ -148,7 +148,7 @@ const AddressBar: React.FC = () => {
     electron.on?.('tab-selected', tabSelectedHandler);
     electron.on?.('tab-update', tabUpdateHandler);
 
-    const intervalId = setInterval(refreshCurrentUrl, 500);
+    const intervalId = setInterval(refreshCurrentUrl, 50); // ← interval for addressbar updates
 
     return () => {
       electron.off?.('tab-url-resolved', tabResolvedHandler);

@@ -49,13 +49,13 @@ export const OverlayText = styled.div<{ isFocused: boolean }>`
 
   /* We will color the spans inside, override transparent on those */
   & .protocol {
-    color: #b0b0b0; /* lighter gray */
+    color: #adadadff;
   }
   & .domain {
-    color: #000000; /* black - keep unchanged */
+    color: #323232ff;
   }
   & .rest {
-    color: #aaaaaa; /* lighter gray */
+    color: #adadadff;
   }
 
   /* Hide overlay text when input is focused so cursor is visible */
