@@ -1,6 +1,6 @@
 import styled, { css, keyframes } from 'styled-components';
 
-// smooth tab creation animation.
+// smooth enter animation.
 const tabEnter = keyframes`
   0% {
     transform: scale(0.95);
@@ -12,7 +12,7 @@ const tabEnter = keyframes`
   }
 `;
 
-// smooth tab closing animation.
+// smooth exit animation.
 const tabExit = keyframes`
   0% {
     transform: scale(1);
@@ -24,6 +24,7 @@ const tabExit = keyframes`
   }
 `;
 
+// spin animation for loading indicators.
 const spin = keyframes`
   0% {
     transform: rotate(0deg);
@@ -39,11 +40,11 @@ export const TabbarContainer = styled.div`
   height: 34px;
   position: relative;
   z-index: 1010;
-  padding: 4px 0 0 6px;
+  padding: 4px 0 0 8px;
   min-width: 0;
   overflow: visible;
   white-space: nowrap;
-  max-width: calc(100% - 150px);
+  max-width: calc(100% - 195px);
 `;
 
 interface TabItemProps {
