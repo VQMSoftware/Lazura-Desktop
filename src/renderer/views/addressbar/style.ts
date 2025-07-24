@@ -7,9 +7,11 @@ export const AddressBarContainer = styled.div`
   border-radius: 9999px;
   height: 32px;
   padding: 0 10px;
-  flex: 1 1 auto;
-  min-width: 150px;
+  flex: 1;
+  min-width: 120px;
+  max-width: calc(100% - 70px); /* Prevents overlap with right toolbar */
   transition: box-shadow 0.2s ease;
+  margin: 0 8px; /* Increased side margins */
 
   &:focus-within {
     box-shadow: 0 0 0 2px #2684ff;

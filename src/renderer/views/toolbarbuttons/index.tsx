@@ -1,9 +1,16 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Button, ButtonIcon, ButtonGroup } from './style';
+import { 
+  NavButtonGroup,
+  NavButton, 
+  ButtonIcon,
+  OptionsButton,
+  OptionsButtonIcon 
+} from './style';
 
 import backIcon from '@icons/back.svg';
 import forwardIcon from '@icons/forward.svg';
 import refreshIcon from '@icons/refresh.svg';
+import optionsIcon from '@icons/options.svg';
 
 const ToolbarButtons: React.FC = () => {
   const [canGoBack, setCanGoBack] = useState(false);
@@ -25,6 +32,8 @@ const ToolbarButtons: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    console.log('ToolbarButtons mounted'); // Confirm mounted
+
     const handleTabUpdate = (data: any) => {
       const currentTabId = window.electron?.getCurrentTabId?.();
       if (currentTabId && data.id === currentTabId) {
@@ -33,15 +42,13 @@ const ToolbarButtons: React.FC = () => {
       }
     };
 
-    const handleTabSelected = (tabId: number) => {
+    const handleTabSelected = () => {
       updateNavigationState();
     };
 
-    // Listen to tab updates
     const listenerA = window.electron?.on?.('tab-update', handleTabUpdate);
     const listenerB = window.electron?.on?.('tab-selected', handleTabSelected);
 
-    // Immediately update when mounted
     updateNavigationState();
 
     return () => {
@@ -71,18 +78,27 @@ const ToolbarButtons: React.FC = () => {
     }
   };
 
+  const handleOptions = () => {
+    alert('This action is not implemented yet.');
+  };
+
   return (
-    <ButtonGroup>
-      <Button onClick={handleBack} disabled={!canGoBack}>
-        <ButtonIcon src={backIcon} alt="Back" $disabled={!canGoBack} />
-      </Button>
-      <Button onClick={handleForward} disabled={!canGoForward}>
-        <ButtonIcon src={forwardIcon} alt="Forward" $disabled={!canGoForward} />
-      </Button>
-      <Button onClick={handleRefresh}>
-        <ButtonIcon src={refreshIcon} alt="Refresh" />
-      </Button>
-    </ButtonGroup>
+    <>
+      <NavButtonGroup>
+        <NavButton onClick={handleBack} disabled={!canGoBack}>
+          <ButtonIcon src={backIcon} alt="Back" $disabled={!canGoBack} />
+        </NavButton>
+        <NavButton onClick={handleForward} disabled={!canGoForward}>
+          <ButtonIcon src={forwardIcon} alt="Forward" $disabled={!canGoForward} />
+        </NavButton>
+        <NavButton onClick={handleRefresh}>
+          <ButtonIcon src={refreshIcon} alt="Refresh" />
+        </NavButton>
+      </NavButtonGroup>
+      <OptionsButton onClick={handleOptions} tabIndex={0}>
+        <OptionsButtonIcon src={optionsIcon} alt="Options" />
+      </OptionsButton>
+    </>
   );
 };
 
