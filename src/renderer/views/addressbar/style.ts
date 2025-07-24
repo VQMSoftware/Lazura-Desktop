@@ -22,7 +22,7 @@ export const AddressBarContainer = styled.div`
 export const SearchIcon = styled.img`
   width: 16px;
   height: 16px;
-  margin-left: 5px;
+  margin-left: 4px;
   margin-right: 6px;
   opacity: 0.6;
 `;
