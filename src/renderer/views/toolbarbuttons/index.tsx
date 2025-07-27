@@ -3,14 +3,11 @@ import {
   NavButtonGroup,
   NavButton, 
   ButtonIcon,
-  OptionsButton,
-  OptionsButtonIcon 
 } from './style';
 
 import backIcon from '@icons/back.svg';
 import forwardIcon from '@icons/forward.svg';
 import refreshIcon from '@icons/refresh.svg';
-import optionsIcon from '@icons/options.svg';
 
 const ToolbarButtons: React.FC = () => {
   const [canGoBack, setCanGoBack] = useState(false);
@@ -78,27 +75,18 @@ const ToolbarButtons: React.FC = () => {
     }
   };
 
-  const handleOptions = () => {
-    alert('This action is not implemented yet.');
-  };
-
   return (
-    <>
-      <NavButtonGroup>
-        <NavButton onClick={handleBack} disabled={!canGoBack}>
-          <ButtonIcon src={backIcon} alt="Back" $disabled={!canGoBack} />
-        </NavButton>
-        <NavButton onClick={handleForward} disabled={!canGoForward}>
-          <ButtonIcon src={forwardIcon} alt="Forward" $disabled={!canGoForward} />
-        </NavButton>
-        <NavButton onClick={handleRefresh}>
-          <ButtonIcon src={refreshIcon} alt="Refresh" />
-        </NavButton>
-      </NavButtonGroup>
-      <OptionsButton onClick={handleOptions} tabIndex={0}>
-        <OptionsButtonIcon src={optionsIcon} alt="Options" />
-      </OptionsButton>
-    </>
+    <NavButtonGroup>
+      <NavButton onClick={handleBack} disabled={!canGoBack}>
+        <ButtonIcon src={backIcon} alt="Back" $disabled={!canGoBack} />
+      </NavButton>
+      <NavButton onClick={handleForward} disabled={!canGoForward}>
+        <ButtonIcon src={forwardIcon} alt="Forward" $disabled={!canGoForward} />
+      </NavButton>
+      <NavButton onClick={handleRefresh}>
+        <ButtonIcon src={refreshIcon} alt="Refresh" />
+      </NavButton>
+    </NavButtonGroup>
   );
 };
 

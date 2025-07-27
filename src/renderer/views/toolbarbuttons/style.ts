@@ -38,17 +38,3 @@ export const ButtonIcon = styled.img<{ $disabled?: boolean }>`
   opacity: ${props => props.$disabled ? 0.4 : 1};
   display: block;
 `;
-
-export const OptionsButton = styled(NavButton)`
-  width: 28px;
-  min-width: 36px;
-  position: absolute;
-  right: 9px;
-`;
-
-export const OptionsButtonIcon = styled(ButtonIcon)`
-  width: 17px;
-  height: 17px;
-  min-width: 18px;
-  min-height: 18px;
-`;
