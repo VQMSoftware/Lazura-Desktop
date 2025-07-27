@@ -4,10 +4,11 @@
 
 ## Overview
 
-Lazura Desktop is a lightweight, modern browser built on Electron. While its feature set is currently minimal, it provides a clean and straightforward browsing experience with support for multiple tabs and basic search functionality.
+Lazura Desktop is a lightweight, modern browser built on Electron. While its feature set is minimal, it provides a clean and straightforward browsing experience with support for multiple tabs and basic search functionality.
 
 Designed with simplicity and performance in mind, Lazura Desktop is an ideal starting point for users who want a no-frills Electron-based browser that won’t weigh down system resources.
 
+since this project is open source, it is a good starting point for anyone who wihes to build an electron based browser.
 ---
 
 ## Features
@@ -21,6 +22,8 @@ Designed with simplicity and performance in mind, Lazura Desktop is an ideal sta
 ---
 
 ## Getting Started
+
+download the latest version of node.js from her: https://nodejs.org/en/download
 
 Enable Corepack:
 
