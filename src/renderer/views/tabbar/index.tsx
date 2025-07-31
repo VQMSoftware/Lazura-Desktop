@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   TabbarContainer,
   TabItem,
@@ -26,6 +26,7 @@ const Tabbar: React.FC = () => {
   const [nextId, setNextId] = useState(1);
   const [closingTabs, setClosingTabs] = useState<Set<number>>(new Set());
   const [loadingFavicons, setLoadingFavicons] = useState<Record<number, boolean>>({});
+  const dragTabId = useRef<number | null>(null);
 
   const createTab = () => {
     const id = nextId;
@@ -78,7 +79,6 @@ const Tabbar: React.FC = () => {
   useEffect(() => {
     const handleTabUpdate = (update: any) => {
       if (update.favicon) {
-        // Delay to simulate loading
         setLoadingFavicons((prev) => ({ ...prev, [update.id]: true }));
         setTimeout(() => {
           setTabs((prevTabs) =>
@@ -92,9 +92,8 @@ const Tabbar: React.FC = () => {
                 : tab
             )
           );
-        }, 600); // Simulate load time
+        }, 600);
       } else {
-        // If no favicon provided, use fallback
         setTabs((prevTabs) =>
           prevTabs.map((tab) =>
             tab.id === update.id
@@ -124,10 +123,38 @@ const Tabbar: React.FC = () => {
     if (tabs.length === 0) createTab();
   }, []);
 
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, id: number) => {
+    dragTabId.current = id;
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>, targetId: number) => {
+    e.preventDefault();
+    if (tabs.length <= 1 || dragTabId.current === null || dragTabId.current === targetId) return;
+
+    const draggedId = dragTabId.current;
+    const currentIndex = tabs.findIndex((tab) => tab.id === draggedId);
+    const targetIndex = tabs.findIndex((tab) => tab.id === targetId);
+
+    if (currentIndex === -1 || targetIndex === -1) return;
+
+    const newTabs = [...tabs];
+    const [movedTab] = newTabs.splice(currentIndex, 1);
+    newTabs.splice(targetIndex, 0, movedTab);
+
+    dragTabId.current = targetId;
+    setTabs(newTabs);
+  };
+
+  const handleDragEnd = () => {
+    dragTabId.current = null;
+  };
+
   return (
     <TabbarContainer>
       {tabs.map(({ id, title, favicon }) => {
         const isLoading = loadingFavicons[id];
+        const draggable = tabs.length > 1;
 
         return (
           <TabItem
@@ -138,9 +165,21 @@ const Tabbar: React.FC = () => {
             onMouseDown={(e) => e.button === 0 && selectTab(id)}
             role="tab"
             aria-selected={id === selectedId}
+            draggable={draggable}
+            onDragStart={(e) => draggable && handleDragStart(e, id)}
+            onDragOver={(e) => draggable && handleDragOver(e, id)}
+            onDragEnd={handleDragEnd}
           >
             <TabFaviconWrapper>
-              {isLoading ? <Spinner /> : <TabFavicon src={favicon || defaultFavicon} alt="favicon" onError={(e) => (e.currentTarget.src = defaultFavicon)} />}
+              {isLoading ? (
+                <Spinner />
+              ) : (
+                <TabFavicon
+                  src={favicon || defaultFavicon}
+                  alt="favicon"
+                  onError={(e) => (e.currentTarget.src = defaultFavicon)}
+                />
+              )}
             </TabFaviconWrapper>
             <TabTitle>{title}</TabTitle>
             <TabCloseButton
