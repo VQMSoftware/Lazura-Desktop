@@ -31,6 +31,12 @@ Enable Corepack:
 corepack enable
 ```
 
+for linux, you enable corepack with this command
+
+```bash
+sudo corepack enable
+```
+
 Clone the repository and install dependencies:
 
 ```bash
