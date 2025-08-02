@@ -17,7 +17,10 @@
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "compile-windows": "yarn build:main && electron-builder --config electron-builder.json --win",
-    "publish": "electron-builder --publish=always"
+    "compile-linux": "yarn build:main && electron-builder --config electron-builder.json --linux",
+    "publish": "electron-builder --config electron-builder.json --publish=always",
+    "publish:win": "electron-builder --config electron-builder.json --win --publish=always",
+    "publish:linux": "electron-builder --config electron-builder.json --linux --publish=always"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
