@@ -1,1 +1,1 @@
-export GH_TOKEN="your_token_here"
+export GH_TOKEN="your_token"
